@@ -1,6 +1,3 @@
-#fasta_file <- read.fasta("//uoa/global/CLSM/School of Biological Sciences/Teams/GubryRangin Group/Ellen Smith/02_Projects/2024_Jasmeet_Rice/DADA2_Outputs/AOA/dada2/ASV_seqs.fasta")
-#fasta_file <- read.fasta("//uoa/global/CLSM/School of Biological Sciences/Teams/GubryRangin Group/Ellen Smith/02_Projects/2024_Jasmeet_Rice/asvcleaner_outs/Cleaning_AOB/cleaned/cleaned.seqs.fasta")
-
 has_stop <- function(seq){
   translated <- seqinr::translate(str_split(seq,"")[[1]],frame = 1)
   return("*" %in% translated)
@@ -58,9 +55,6 @@ search_sequences <- function(fasta_file,start_lhs,trim_rhs){
   return(list(cleaned_fasta,bad_fasta))
 }
 
-combos <- expand.grid(c(1,2,3),c(1,2,3))
-
-
 pickbest <- function(fasta_file){
   
   combos <- expand.grid(c(0,1,2),c(0,1,2))
@@ -117,8 +111,9 @@ write_fastas <- function(result, fileoutprefix = "ASVs", write=TRUE){
 #' @return None, writes FASTA files with and without stop codons.
 #' @export
 #'
-remove_stop_codons <- function(fasta, fileoutprefix){
+remove_stop_codons <- function(fasta, fileoutprefix="amplicon",writefiles=TRUE){
   bestres <- pickbest(fasta_file = fasta)
-  write_fastas(bestres,fileoutprefix = fileoutprefix)
+  if(writefiles) write_fastas(bestres,fileoutprefix = fileoutprefix)
+  return(read.fasta(textConnection(bestres[[1]]))) #returns a fasta object
 }
 

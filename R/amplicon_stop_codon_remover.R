@@ -24,7 +24,7 @@ check_stop_codons <- function(seq, start_lhs, trim_rhs) {
     return (has_stop(rhs) || has_stop(lhs)) 
   }else{
     return(has_stop(seq))
-  }
+  } 
 
 }
 

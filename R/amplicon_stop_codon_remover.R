@@ -13,7 +13,7 @@ check_stop_codons <- function(seq, start_lhs, trim_rhs) {
 
   if(grepl("nnnnnnnnnn",seq)){ # contains Ns
     #get LHS
-    lhs <- str_split(seq,"nnnnnnnnnn")[[1]][1]
+    lhs <- stringr::str_split(seq,"nnnnnnnnnn")[[1]][1]
     lhs <- substring(lhs,1,(nchar(lhs) -nchar(lhs) %% 3)) # make it a multiple of 3
   
     

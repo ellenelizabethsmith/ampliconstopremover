@@ -111,8 +111,19 @@ write_fastas <- function(result, fileoutprefix = "ASVs", write=TRUE){
 #' @return None, writes FASTA files with and without stop codons.
 #' @export
 #'
-remove_stop_codons <- function(fasta, fileoutprefix="amplicon",writefiles=TRUE){
-  bestres <- pickbest(fasta_file = fasta)
+remove_stop_codons <- function(fasta, fileoutprefix="amplicon",writefiles=TRUE,startf = NULL,trimr = NULL){
+  
+  #if user provides trim values use these
+  if((!is.null(startf) || !is.null(trimr)) & ((startf > -1 & startf < 3 ) && (startf > -1 & trimr < 3 ))){
+    bestres <- search_sequences(fasta,startf,trimr)
+    writeLines(paste0("Sequences without stop codon: ",length(bestres[[1]])))
+    writeLines(paste0("Sequences with stop codon: ",length(bestres[[2]])))
+  } else {
+    #otherwise just try all reading frames
+    writeLines("\"startf\" and \"trimr\" either not provided or invalid. Reading frame with fewest stop codons will be used.")
+    bestres <- pickbest(fasta_file = fasta)
+  }
+  
   if(writefiles) write_fastas(bestres,fileoutprefix = fileoutprefix)
   return(read.fasta(textConnection(bestres[[1]]))) #returns a fasta object
 }

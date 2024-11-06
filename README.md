@@ -8,6 +8,7 @@ The default behaviour is to write both the "passing" and "failing" reads to new 
 ```{r}
 devtools::install_github("ellenelizabethsmith/ampliconstopremover")
 library(ampliconstopremover)
+library(seqinr)
 
 #load fasta file
 aoa_fasta <- read.fasta("AOA.fasta")

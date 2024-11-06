@@ -8,7 +8,7 @@ check_stop_codons <- function(seq, start_lhs, trim_rhs) {
   
   seq <- substring(seq,(0+start_lhs),(nchar(seq)-trim_rhs))
 
-  if(grepl("nnnnnnnnnn",seq)){ # contains Ns
+  if(grepl("nnnnnnnnnn",seq)){ # contains Ns 
     #get LHS
     lhs <- stringr::str_split(seq,"nnnnnnnnnn")[[1]][1]
     lhs <- substring(lhs,1,(nchar(lhs) -nchar(lhs) %% 3)) # make it a multiple of 3
@@ -63,16 +63,16 @@ pickbest <- function(fasta_file){
   bestres <- c()
   bestcombo <- ""
   
-  print("Checking all reading frame combinations...")
+  writeLines("Checking all reading frame combinations...")
   results <- apply(combos,1,function(combo){
     start_lhs <- combo["Var1"]
     trim_rhs <- combo["Var2"]
     res <- search_sequences(fasta_file,start_lhs,trim_rhs)
   })
-  print("...done.")
+  writeLines("...done.")
   names(results) <- names
   
-  print("Selecting best reading frame...")
+  writeLines("Selecting best reading frame...")
   for(name in names(results)){
     res <- results[[name]]
     nclean <- length(res[[1]])
@@ -83,10 +83,10 @@ pickbest <- function(fasta_file){
       bestcombo <- name
       }
   }
-  print("...done.")
-  print(bestcombo)
-  print(paste0("Sequences without stop codon: ",length(bestres[[1]])))
-  print(paste0("Sequences with stop codon: ",length(bestres[[2]])))
+  writeLines("...done.")
+  writeLines(bestcombo)
+  writeLines(paste0("Sequences without stop codon: ",length(bestres[[1]])))
+  writeLines(paste0("Sequences with stop codon: ",length(bestres[[2]])))
   return(bestres)
 }
 
@@ -94,12 +94,12 @@ write_fastas <- function(result, fileoutprefix = "ASVs", write=TRUE){
   cleanout <- paste0(fileoutprefix,"_pass.fasta")
   failout <- paste0(fileoutprefix,"_fail.fasta")
   
-  print("Writing new files...")
-  print(paste0("Writing ", cleanout))
+  writeLines("Writing new files...")
+  writeLines(paste0("Writing ", cleanout))
   writeLines(result[[1]],cleanout)
-  print(paste0("Writing ", failout))
+  writeLines(paste0("Writing ", failout))
   writeLines(result[[2]],failout)
-  print("...done.")
+  writeLines("...done.")
   
 }
 
